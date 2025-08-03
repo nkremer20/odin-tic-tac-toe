@@ -93,7 +93,7 @@ function PlayGame(players) {
     printGameBoard();
 
     
-    return {getActivePlayer, switchActivePlayer, printGameBoard, playRound};
+    return {getActivePlayer, playRound};
 
 };
 
