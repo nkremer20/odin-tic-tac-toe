@@ -97,6 +97,23 @@ function PlayGame(players) {
 
 };
 
-const players = CreatePlayers('player 1', 'player 2');
+window.onload = () => {
+    const form = document.querySelector('.new-game');
+    
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const player1_name = form.elements['player1'].value;
+        const player2_name = form.elements['player2'].value;
 
-const game = PlayGame(players);
+        // Create the player objects
+        const players = CreatePlayers(player1_name, player2_name);
+        console.log(players);
+
+        form.reset();
+    })
+}
+
+
+// const players = CreatePlayers('player 1', 'player 2');
+
+// const game = PlayGame(players);
