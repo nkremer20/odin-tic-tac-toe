@@ -50,11 +50,11 @@ function Cell() {
 function CreatePlayers (player1, player2) {
     const players = [
         {
-            player1,
+            name: player1,
             token: 'X'
         },
         {
-            player2,
+            name: player2,
             token: 'O'
         }
     ];
@@ -66,7 +66,9 @@ function PlayGame(players) {
     const player1 = players[0];
     const player2 = players[1];
 
-    let activePlayer = player1
+    const board = Gameboard();
+
+    let activePlayer = player1;
 
     const switchActivePlayer = () => {
         activePlayer = activePlayer === player1 ? player2 : player1;
@@ -74,8 +76,24 @@ function PlayGame(players) {
 
     const getActivePlayer = () => activePlayer;
 
+    const printGameBoard = () => {
+        board.printBoard();
+        console.log(`It's ${getActivePlayer().name}'s turn`);
+    };
+
+    const playRound = (row, column) => {
+        console.log(`${getActivePlayer().name} placed an ${getActivePlayer.token} at row: ${row} | column: ${column}`);
+
+        board.placeMarker(getActivePlayer().token, row, column);
+
+        switchActivePlayer();
+        printGameBoard();
+    }
+
+    printGameBoard();
+
     
-    return {getActivePlayer};
+    return {getActivePlayer, switchActivePlayer, printGameBoard, playRound};
 
 };
 
