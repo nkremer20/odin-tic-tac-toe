@@ -28,8 +28,9 @@ function Gameboard() {
 
     return {getBoard, placeMarker, printBoard};
     
-}
+};
 
+// Create cell object
 function Cell() {
     let value = 0;
 
@@ -43,6 +44,41 @@ function Cell() {
         addMarker,
         getValue
     };
+};
+
+// Create player objects
+function CreatePlayers (player1, player2) {
+    const players = [
+        {
+            player1,
+            token: 'X'
+        },
+        {
+            player2,
+            token: 'O'
+        }
+    ];
+
+    return players;
 }
 
-const game = Gameboard()
+function PlayGame(players) {
+    const player1 = players[0];
+    const player2 = players[1];
+
+    let activePlayer = player1
+
+    const switchActivePlayer = () => {
+        activePlayer = activePlayer === player1 ? player2 : player1;
+    };
+
+    const getActivePlayer = () => activePlayer;
+
+    
+    return {getActivePlayer};
+
+};
+
+const players = CreatePlayers('player 1', 'player 2');
+
+const game = PlayGame(players);
