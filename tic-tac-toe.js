@@ -68,6 +68,27 @@ function PlayGame(players) {
 
     const board = Gameboard();
 
+    // Add gameboard to the DOM
+    const boardDiv = document.createElement('div');
+    boardDiv.classList.add('gameboard');
+    document.body.appendChild(boardDiv);
+    let colIndex = 0;
+    let rowIndex = 0;
+    for (let i = 0; i < 9; i++) {
+        const boardCell = document.createElement('button');
+        boardCell.classList.add('marker');
+        boardDiv.appendChild(boardCell);
+
+        if (colIndex <= 2) {
+            boardCell.id = colIndex;
+            colIndex++;
+            if (colIndex === 3) {
+                colIndex = 0
+            }
+        }
+    };
+
+
     let activePlayer = player1;
 
     const switchActivePlayer = () => {
@@ -108,6 +129,8 @@ window.onload = () => {
         // Create the player objects
         const players = CreatePlayers(player1_name, player2_name);
         console.log(players);
+
+        const game = PlayGame(players);
 
         form.reset();
     })
