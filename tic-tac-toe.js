@@ -68,6 +68,23 @@ function PlayGame(players) {
 
     const board = Gameboard();
 
+    // Remove form from the DOM
+    const form = document.querySelector('.new-game');
+    if (form) {
+        form.remove();
+    }
+
+    // Add player names to DOM
+    const playerContainer = document.createElement('div');
+    playerContainer.classList.add('player-container');
+    document.body.appendChild(playerContainer);
+    const player1_name = document.createElement('h2');
+    playerContainer.appendChild(player1_name);
+    player1_name.textContent = player1.name;
+    const player2_name = document.createElement('h2');
+    playerContainer.appendChild(player2_name);
+    player2_name.textContent = player2.name;
+
     // Add gameboard to the DOM
     const boardDiv = document.createElement('div');
     boardDiv.classList.add('gameboard');
@@ -85,8 +102,8 @@ function PlayGame(players) {
             if (colIndex === 3) {
                 colIndex = 0;
                 rowIndex++;
-            }
-        }
+            };
+        };
     };
 
 
