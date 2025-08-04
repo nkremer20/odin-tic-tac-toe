@@ -80,10 +80,11 @@ function PlayGame(players) {
         boardDiv.appendChild(boardCell);
 
         if (colIndex <= 2) {
-            boardCell.id = colIndex;
+            boardCell.id = rowIndex + '|' + colIndex;
             colIndex++;
             if (colIndex === 3) {
-                colIndex = 0
+                colIndex = 0;
+                rowIndex++;
             }
         }
     };
