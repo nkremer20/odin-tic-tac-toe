@@ -81,6 +81,7 @@ function PlayGame(players) {
     const player1_name = document.createElement('h2');
     playerContainer.appendChild(player1_name);
     player1_name.textContent = player1.name;
+    player1_name.classList.add('active-player');
     const player2_name = document.createElement('h2');
     playerContainer.appendChild(player2_name);
     player2_name.textContent = player2.name;
@@ -110,7 +111,16 @@ function PlayGame(players) {
     let activePlayer = player1;
 
     const switchActivePlayer = () => {
-        activePlayer = activePlayer === player1 ? player2 : player1;
+        // activePlayer = activePlayer === player1 ? player2 : player1;
+        if (activePlayer === player1) {
+            activePlayer = player2;
+            player2_name.classList.add('active-player');
+            player1_name.classList.remove('active-player');
+        } else {
+            activePlayer = player1;
+            player1_name.classList.add('active-player');
+            player2_name.classList.remove('active-player');
+        }
     };
 
     const getActivePlayer = () => activePlayer;
@@ -120,19 +130,19 @@ function PlayGame(players) {
         console.log(`It's ${getActivePlayer().name}'s turn`);
     };
 
-    const playRound = (row, column) => {
-        console.log(`${getActivePlayer().name} placed an ${getActivePlayer.token} at row: ${row} | column: ${column}`);
-
+    const playRound = (marker) => {
+        // console.log(`${getActivePlayer().name} placed an ${getActivePlayer.token} at row: ${row} | column: ${column}`);
+        // Parse the row and column number from the marker id
+        const row = marker.split('|')[0];
+        const column = marker.split('|')[1];
+        
         board.placeMarker(getActivePlayer().token, row, column);
 
         switchActivePlayer();
-        printGameBoard();
     }
 
-    printGameBoard();
-
     
-    return {getActivePlayer, playRound};
+    return {getActivePlayer, playRound, printGameBoard};
 
 };
 
@@ -151,10 +161,16 @@ window.onload = () => {
         const game = PlayGame(players);
 
         form.reset();
+
+        const markers = document.querySelectorAll('.marker');
+        
+        markers.forEach(
+            marker => {
+                marker.addEventListener('click', () => {
+                    game.playRound(marker.id);
+                    game.printGameBoard();
+                })
+            }
+        )
     })
 }
-
-
-// const players = CreatePlayers('player 1', 'player 2');
-
-// const game = PlayGame(players);
