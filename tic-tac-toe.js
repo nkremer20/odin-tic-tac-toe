@@ -174,6 +174,7 @@ window.onload = () => {
                 marker.addEventListener('click', () => {
                     game.playRound(marker.id);
                     game.printGameBoard();
+                    marker.disabled = true;
                 })
             }
         )
