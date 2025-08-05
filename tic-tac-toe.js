@@ -20,6 +20,12 @@ function Gameboard() {
         if (selectedCell !== 0) return;
 
         board[row][column].addMarker(player);
+
+        const newMarker = board[row][column].getValue();
+        
+        // Update the Marker button in the DOM to show the newMarker value
+        const newMarkerCell = document.getElementById(`${row}|${column}`);
+        newMarkerCell.textContent = newMarker;
     };
     const printBoard = () => {
         const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
@@ -131,7 +137,6 @@ function PlayGame(players) {
     };
 
     const playRound = (marker) => {
-        // console.log(`${getActivePlayer().name} placed an ${getActivePlayer.token} at row: ${row} | column: ${column}`);
         // Parse the row and column number from the marker id
         const row = marker.split('|')[0];
         const column = marker.split('|')[1];
