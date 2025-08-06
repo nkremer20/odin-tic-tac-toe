@@ -92,6 +92,12 @@ function PlayGame(players) {
     playerContainer.appendChild(player2_name);
     player2_name.textContent = player2.name;
 
+    // Add reset button
+    const resetBtn = document.createElement('button');
+    resetBtn.textContent = 'Reset';
+    resetBtn.style = 'margin-top: 20px'
+    document.body.appendChild(resetBtn);
+
     // Add gameboard to the DOM
     const boardDiv = document.createElement('div');
     boardDiv.classList.add('gameboard');
@@ -171,9 +177,16 @@ function PlayGame(players) {
         board.placeMarker(getActivePlayer().token, row, column);
 
         if (checkWinner() === true) {
-            console.log('Game Over');
-        } else 
-        switchActivePlayer();
+            player1_name.remove();
+            player2_name.remove();
+            boardDiv.remove();
+            const winner = document.createElement('h2');
+            winner.textContent = `Winner: ${activePlayer.name}`
+            playerContainer.appendChild(winner);
+        } else {
+            switchActivePlayer();
+        }
+        
     }
 
     
