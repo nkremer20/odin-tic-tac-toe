@@ -117,7 +117,6 @@ function PlayGame(players) {
     let activePlayer = player1;
 
     const switchActivePlayer = () => {
-        // activePlayer = activePlayer === player1 ? player2 : player1;
         if (activePlayer === player1) {
             activePlayer = player2;
             player2_name.classList.add('active-player');
@@ -136,6 +135,34 @@ function PlayGame(players) {
         console.log(`It's ${getActivePlayer().name}'s turn`);
     };
 
+    const checkWinner = () => {
+        const currentBoard = board.getBoard();
+
+        const players = [player1, player2];
+        
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].token === currentBoard[0][0].getValue() && players[i].token === currentBoard[0][1].getValue() && players[i].token === currentBoard[0][2].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[1][0].getValue() && players[i].token === currentBoard[1][1].getValue() && players[i].token === currentBoard[1][2].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[2][0].getValue() && players[i].token === currentBoard[2][1].getValue() && players[i].token === currentBoard[2][2].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[0][0].getValue() && players[i].token === currentBoard[1][0].getValue() && players[i].token === currentBoard[2][0].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[0][1].getValue() && players[i].token === currentBoard[1][1].getValue() && players[i].token === currentBoard[2][1].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[0][2].getValue() && players[i].token === currentBoard[1][2].getValue() && players[i].token === currentBoard[2][2].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[0][0].getValue() && players[i].token === currentBoard[1][1].getValue() && players[i].token === currentBoard[2][2].getValue()) {
+                return true;
+            } else if (players[i].token === currentBoard[0][2].getValue() && players[i].token === currentBoard[1][1].getValue() && players[i].token === currentBoard[2][0].getValue()) {
+                return true;
+            }
+        };
+
+        return false;
+    }
+
     const playRound = (marker) => {
         // Parse the row and column number from the marker id
         const row = marker.split('|')[0];
@@ -143,6 +170,9 @@ function PlayGame(players) {
         
         board.placeMarker(getActivePlayer().token, row, column);
 
+        if (checkWinner() === true) {
+            console.log('Game Over');
+        } else 
         switchActivePlayer();
     }
 
