@@ -96,6 +96,7 @@ function PlayGame(players) {
     const resetBtn = document.createElement('button');
     resetBtn.textContent = 'Reset';
     resetBtn.style = 'margin-top: 20px'
+    resetBtn.id = 'reset';
     document.body.appendChild(resetBtn);
 
     // Add gameboard to the DOM
@@ -221,5 +222,49 @@ window.onload = () => {
                 })
             }
         )
+
+        // Handle reset button events
+        const reset = document.querySelector('#reset');
+        reset.addEventListener('click', () => {
+            // Remove all the game ui elements
+            const player_container = document.querySelector('.player-container');
+            player_container.remove();
+            const gameboard = document.querySelector('.gameboard');
+            gameboard.remove();
+            reset.remove();
+
+            // Add the new players form to the DOM
+            const new_form = document.createElement('form');
+            new_form.classList.add('new-game');
+            new_form.action = '';
+            document.body.appendChild(new_form);
+            const p1_label = document.createElement('label');
+            p1_label.htmlFor = 'player1';
+            p1_label.textContent = 'Player 1 ';
+            new_form.appendChild(p1_label);
+            const p1_input = document.createElement('input');
+            p1_input.type = 'text';
+            p1_input.id = 'player1';
+            p1_input.name = 'player1';
+            p1_input.required = true;
+            new_form.appendChild(p1_input);
+            const p2_label = document.createElement('label');
+            p2_label.htmlFor = 'player2';
+            p2_label.textContent = 'Player 2 ';
+            new_form.appendChild(p2_label);
+            const p2_input = document.createElement('input');
+            p2_input.type = 'text';
+            p2_input.id = 'player2';
+            p2_input.name = 'player2';
+            p2_input.required = true;
+            new_form.appendChild(p2_input);
+            const new_game_btn = document.createElement('button');
+            new_game_btn.type = 'submit';
+            new_game_btn.textContent = 'Start New Game';
+            new_form.appendChild(new_game_btn);
+            console.log(game.getActivePlayer());
+
+            
+        })
     })
 }
