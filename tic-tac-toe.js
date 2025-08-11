@@ -196,22 +196,22 @@ function PlayGame(players) {
 };
 
 window.onload = () => {
-    const form = document.querySelector('.new-game');
+    let form = document.querySelector('.new-game');
     
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        const player1_name = form.elements['player1'].value;
-        const player2_name = form.elements['player2'].value;
+        let player1_name = form.elements['player1'].value;
+        let player2_name = form.elements['player2'].value;
 
         // Create the player objects
-        const players = CreatePlayers(player1_name, player2_name);
+        let players = CreatePlayers(player1_name, player2_name);
         console.log(players);
 
-        const game = PlayGame(players);
+        let game = PlayGame(players);
 
         form.reset();
 
-        const markers = document.querySelectorAll('.marker');
+        let markers = document.querySelectorAll('.marker');
         
         markers.forEach(
             marker => {
@@ -236,7 +236,7 @@ window.onload = () => {
             reset.remove();
 
             // Add the new players form to the DOM
-            const form = document.createElement('form');
+            form = document.createElement('form');
             form.classList.add('new-game');
             form.action = '';
             document.body.appendChild(form);
@@ -261,12 +261,37 @@ window.onload = () => {
             p2_input.required = true;
             form.appendChild(p2_input);
             const new_game_btn = document.createElement('button');
-            new_game_btn.type = 'submit';
             new_game_btn.textContent = 'Start New Game';
             form.appendChild(new_game_btn);
             console.log(game.getActivePlayer());
 
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                player1_name = form.elements['player1'].value;
+                player2_name = form.elements['player2'].value;
 
+                players = CreatePlayers(player1_name, player2_name);
+                console.log(players);
+
+                game = PlayGame(players);
+
+                form.reset();
+
+                markers = document.querySelectorAll('.marker');
+        
+                markers.forEach(
+                    marker => {
+                        marker.addEventListener('click', () => {
+                            game.playRound(marker.id);
+                            game.printGameBoard();
+                            marker.disabled = true;
+                        })
+                    }
+                )
+
+
+            })
+            
         })
     })
 }
