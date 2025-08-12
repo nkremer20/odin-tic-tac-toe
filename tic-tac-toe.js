@@ -27,12 +27,8 @@ function Gameboard() {
         const newMarkerCell = document.getElementById(`${row}|${column}`);
         newMarkerCell.textContent = newMarker;
     };
-    const printBoard = () => {
-        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
-        console.log(boardWithCellValues);
-    };
 
-    return {getBoard, placeMarker, printBoard};
+    return {getBoard, placeMarker};
     
 };
 
@@ -137,10 +133,6 @@ function PlayGame(players) {
 
     const getActivePlayer = () => activePlayer;
 
-    const printGameBoard = () => {
-        board.printBoard();
-        console.log(`It's ${getActivePlayer().name}'s turn`);
-    };
 
     const checkWinner = () => {
         const currentBoard = board.getBoard();
@@ -167,6 +159,9 @@ function PlayGame(players) {
             }
         };
 
+        let tie = false;
+        for (let i = 0; i < )
+
         return false;
     }
 
@@ -191,107 +186,115 @@ function PlayGame(players) {
     }
 
     
-    return {getActivePlayer, playRound, printGameBoard};
+    return {getActivePlayer, playRound};
 
 };
 
+// Global variable to hold the state of the game
+let currentGame = null;
+
+// Function to create a new game form
+function createNewGameForm() {
+    const form = document.createElement('form');
+    form.classList.add('new-game');
+    form.action = '';
+
+    const p1_label = document.createElement('label');
+    p1_label.htmlFor = 'player1';
+    p1_label.textContent = 'Player 1 ';
+    form.appendChild(p1_label);
+
+    const p1_input = document.createElement('input');
+    p1_input.type = 'text';
+    p1_input.id = 'player1';
+    p1_input.name = 'player1';
+    p1_input.required = true;
+    form.appendChild(p1_input);
+
+    const p2_label = document.createElement('label');
+    p2_label.htmlFor = 'player2';
+    p2_label.textContent = 'Player 2 ';
+    form.appendChild(p2_label);
+
+    const p2_input = document.createElement('input');
+    p2_input.type = 'text';
+    p2_input.id = 'player2';
+    p2_input.name = 'player2';
+    p2_input.required = true;
+    form.appendChild(p2_input);
+
+    const new_game_btn = document.createElement('button');
+    new_game_btn.textContent = 'Start New Game';
+    form.appendChild(new_game_btn);
+
+    document.body.appendChild(form);
+
+    return form;
+};
+
+function startNewGame(player1_name, player2_name) {
+    // Create the player objects
+    let players = CreatePlayers(player1_name, player2_name);
+
+    // Start the new game
+    currentGame = PlayGame(players);
+
+    let markers = document.querySelectorAll('.marker');
+        
+    markers.forEach(
+        marker => {
+            marker.addEventListener('click', () => {
+                currentGame.playRound(marker.id);
+                marker.disabled = true;
+            })
+        }
+    );
+
+    // Event listener for reset button
+    const reset = document.querySelector('#reset');
+    reset.addEventListener('click', resetGame);
+};
+
+// Resets the game state
+function resetGame() {
+    const player_container = document.querySelector('.player-container');
+    if (player_container) {
+        player_container.remove();
+    }
+
+    const gameboard = document.querySelector('.gameboard');
+    if (gameboard) {
+        gameboard.remove();
+    }
+
+    const reset = document.querySelector('#reset');
+    if (reset) {
+        reset.remove();
+    }
+
+    const form = createNewGameForm();
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const player1_name = form.elements['player1'].value;
+        const player2_name = form.elements['player2'].value;
+
+        startNewGame(player1_name, player2_name);
+
+        form.reset();
+    })
+};
+
 window.onload = () => {
-    let form = document.querySelector('.new-game');
+    const form = document.querySelector('.new-game');
     
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        let player1_name = form.elements['player1'].value;
-        let player2_name = form.elements['player2'].value;
+        const player1_name = form.elements['player1'].value;
+        const player2_name = form.elements['player2'].value;
 
-        // Create the player objects
-        let players = CreatePlayers(player1_name, player2_name);
-        console.log(players);
-
-        let game = PlayGame(players);
+        startNewGame(player1_name, player2_name);
 
         form.reset();
-
-        let markers = document.querySelectorAll('.marker');
-        
-        markers.forEach(
-            marker => {
-                marker.addEventListener('click', () => {
-                    game.playRound(marker.id);
-                    game.printGameBoard();
-                    marker.disabled = true;
-                })
-            }
-        )
-
-        // Handle reset button events
-        const reset = document.querySelector('#reset');
-        reset.addEventListener('click', () => {
-            // Remove all the game ui elements
-            const player_container = document.querySelector('.player-container');
-            player_container.remove();
-            const gameboard = document.querySelector('.gameboard');
-            if (gameboard) {
-                gameboard.remove();
-            }
-            reset.remove();
-
-            // Add the new players form to the DOM
-            form = document.createElement('form');
-            form.classList.add('new-game');
-            form.action = '';
-            document.body.appendChild(form);
-            const p1_label = document.createElement('label');
-            p1_label.htmlFor = 'player1';
-            p1_label.textContent = 'Player 1 ';
-            form.appendChild(p1_label);
-            const p1_input = document.createElement('input');
-            p1_input.type = 'text';
-            p1_input.id = 'player1';
-            p1_input.name = 'player1';
-            p1_input.required = true;
-            form.appendChild(p1_input);
-            const p2_label = document.createElement('label');
-            p2_label.htmlFor = 'player2';
-            p2_label.textContent = 'Player 2 ';
-            form.appendChild(p2_label);
-            const p2_input = document.createElement('input');
-            p2_input.type = 'text';
-            p2_input.id = 'player2';
-            p2_input.name = 'player2';
-            p2_input.required = true;
-            form.appendChild(p2_input);
-            const new_game_btn = document.createElement('button');
-            new_game_btn.textContent = 'Start New Game';
-            form.appendChild(new_game_btn);
-            console.log(game.getActivePlayer());
-
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-                player1_name = form.elements['player1'].value;
-                player2_name = form.elements['player2'].value;
-
-                players = CreatePlayers(player1_name, player2_name);
-                console.log(players);
-
-                game = PlayGame(players);
-
-                form.reset();
-
-                markers = document.querySelectorAll('.marker');
-        
-                markers.forEach(
-                    marker => {
-                        marker.addEventListener('click', () => {
-                            game.playRound(marker.id);
-                            game.printGameBoard();
-                            marker.disabled = true;
-                        })
-                    }
-                )
-
-
-            })
-            
-        })
     })
 }
