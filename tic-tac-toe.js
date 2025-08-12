@@ -136,6 +136,7 @@ function PlayGame(players) {
 
     const checkWinner = () => {
         const currentBoard = board.getBoard();
+        console.log(currentBoard);
 
         const players = [player1, player2];
         
@@ -159,8 +160,20 @@ function PlayGame(players) {
             }
         };
 
-        let tie = false;
-        for (let i = 0; i < )
+        let tie = true;
+        for (let i = 0; i < currentBoard.length; i++) {
+            for (j = 0; j < currentBoard.length; j++) {
+                const cell_value = currentBoard[i][j].getValue();
+                if (cell_value === 0) {
+                    tie = false;
+                    break;
+                }
+            }
+        };
+
+        if (tie === true) {
+            return 'tie';
+        }
 
         return false;
     }
@@ -172,17 +185,25 @@ function PlayGame(players) {
         
         board.placeMarker(getActivePlayer().token, row, column);
 
-        if (checkWinner() === true) {
+        const winner = checkWinner();
+        
+        if (winner === true) {
             player1_name.remove();
             player2_name.remove();
             boardDiv.remove();
-            const winner = document.createElement('h2');
-            winner.textContent = `Winner: ${activePlayer.name}`
-            playerContainer.appendChild(winner);
+            const winner_element = document.createElement('h2');
+            winner_element.textContent = `Winner: ${activePlayer.name}`
+            playerContainer.appendChild(winner_element);
+        } else if (winner === 'tie'){
+            player1_name.remove();
+            player2_name.remove();
+            boardDiv.remove();
+            const tie_element = document.createElement('h2');
+            tie_element.textContent = 'Tie';
+            playerContainer.appendChild(tie_element);
         } else {
             switchActivePlayer();
         }
-        
     }
 
     
